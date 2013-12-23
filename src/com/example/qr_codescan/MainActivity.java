@@ -1,15 +1,27 @@
 package com.example.qr_codescan;
 
 
+
+import java.util.HashMap;
+import java.util.Map;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.android.volley.Request.Method;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 public class MainActivity extends Activity {
 	private final static int SCANNIN_GREQUEST_CODE = 1;
@@ -54,9 +66,48 @@ public class MainActivity extends Activity {
         switch (requestCode) {
 		case SCANNIN_GREQUEST_CODE:
 			if(resultCode == RESULT_OK){
-				Bundle bundle = data.getExtras();
+				final Bundle bundle = data.getExtras();
 				//显示扫描到的内容
 				mTextView.setText(bundle.getString("result"));
+				
+				RequestQueue mRequestQueue = Volley.newRequestQueue(this);
+				
+				mRequestQueue.add(new StringRequest(Method.POST,
+						"http://wlp.groupsreader.com/clientLogin",
+						new Response.Listener<String>() {
+
+							@Override
+							public void onResponse(String response) {
+								// TODO Auto-generated method stub
+								Log.i("volley==============",
+										response.toString());
+							}
+						}, new Response.ErrorListener() {
+
+							@Override
+							public void onErrorResponse(VolleyError error) {
+								// TODO Auto-generated method stub
+								Log.i("volley==============", error.toString());
+							}
+						}) {
+
+					protected Map<String, String> getParams()
+							throws com.android.volley.AuthFailureError {
+						HashMap<String, String> param = new HashMap<String, String>();
+						param.put("username", "evil");
+						param.put("pwd", "evil");
+						param.put("uuid", bundle.getString("result"));
+						return param;
+					};
+				});
+				
+				
+				
+				
+				
+				
+				
+				
 				//显示
 				mImageView.setImageBitmap((Bitmap) data.getParcelableExtra("bitmap"));
 			}
