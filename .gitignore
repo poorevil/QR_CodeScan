@@ -1,0 +1,16 @@
+
+bin/AndroidManifest.xml
+
+bin/AndroidManifest.xml
+
+bin/QR_CodeScan.apk
+
+bin/QR_CodeScan.apk
+
+bin/classes/com/mining/app/zxing/decoding/DecodeThread.class
+
+bin/classes/com/mining/app/zxing/view/ViewfinderView.class
+
+*.class
+
+*.class
